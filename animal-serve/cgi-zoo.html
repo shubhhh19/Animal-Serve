@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2ad8eb;
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Center-align the entire page content */
+        }
+    
+        #AnimalForm {
+            display: inline-block; /* Center-align the form */
+            text-align: left; /* Reset text alignment for form elements */
+        }
+    
+        h2 {
+            text-align: center; /* Center-align the heading */
+            
+        }
+        
+        table {
+            margin: 0 auto; /* Center-align the table */
+        }
+    
+        #userName, #animalSelection, #nameSubmit, #animalSubmit {
+            padding: 5px;
+            font-size: 16px;
+        }
+    
+        #nameError, #animalError {
+            color: red;
+            font-weight: bold;
+        }
+    
+        #userNameS {
+            font-weight: bold;
+        }
+    
+        img {
+            display: block;
+            margin: 0 auto; /* Center-align the images */
+        }
+    </style>
+<script type="text/javascript">
+
+/*
+ brief : Checks the inputs the user enters if the user enters blank or a numeric value
+         it will show error informing to input a correct way. If every thing is right it will 
+         move to the second screen.
+ param : None
+ return: None 
+*/
+
+function validateInputs()
+{
+var name = "";
+var nameValid = false;
+
+var whichName = document.getElementById("userName").value;
+name = whichName;
+document.getElementById("userNameS").textContent = name;
+
+nameLength = (whichName.trim()).length;
+if(nameLength == "")
+{
+     // error message / feedback
+    document.getElementById("nameError").innerHTML = "Your name <b>cannot</b> be BLANK.";
+    return false;
+}else
+{ 
+    // setup the regex for alpha characters and spaces
+    var lettersNSpaces = /^[A-Za-z\s]+$/;
+    if(whichName.match(lettersNSpaces))
+    {
+        nameValid = true;
+    }
+    else
+    {
+         // error message / feedback
+        document.getElementById("nameError").innerHTML = "Your name must be made of <b>alpha</b> characters <u>only</u>.";
+        return false;
+    }
+         // When everything is right         
+    if(nameValid == true && nameLength >= 1)
+    {
+        document.getElementById("FormName").style.display = "none";
+        document.getElementById("row").style.display = "block";
+        document.getElementById("animalSelectionRow").style.display = "block";
+        document.getElementById("userNameS").style.display = "block"; // Show the user name
+    } 
+}
+    return nameValid;
+}
+
+/*
+ brief : checks which animal the user selected. if the user doesnt select the correct animal
+         it will show error informing to select the correct animal. If every thing is right it will 
+         move to the second screen.
+ param : None
+ return: None 
+*/
+
+function validateAnimal()
+{
+    var userName;
+    var animalValid = false;
+    var  whichAnimal =  document.getElementById("animalSelection").value;
+    if(whichAnimal == "0")
+    {
+        document.getElementById("animalError").innerHTML = "Please choose an animal from the drop-down options";
+        return false;
+    }else
+    {
+        animalValid = true;
+    }
+    if(animalValid == true)
+    {
+        userName = document.getElementById("userName").value;
+        document.getElementById("hiddenName").value = userName;
+        
+    }
+    return animalValid;
+}
+
+</script>
+ </head>
+
+<!--
+    brief : This div is the starting page of the animalForm in which the user enters his name
+            In this screen there is also a javascript validateInputs function that checks if the name that user 
+            enters is acceptable or not. If there is some issue than its shows an error if everything is 
+            valid it moves to Screen2 amd on the Screen 2 the user selects the animal we want to see. if
+            he doesnt select from the current list error is shown. If everything is right the user will see
+            the information of the animal
+-->
+
+
+ <body>
+<form name="AnimalForm" id = "AnimalForm" method="GET" action= "animals.exe"  style="display: block;" onsubmit="return validateAnimal()">
+<h2 align ="center">Animals Zoo</h2>
+<table id = "AnimalsTable" align="center">
+<tr id = "FormName">
+    <td>Name:</td>
+    <td><input name = "Name" id = "userName" type="text"></td>
+    <td align="center"><input type="button" id = "nameSubmit" value="Submit" onclick="validateInputs()"></td>
+</tr>
+<tr>
+    <td colspan="3"align = "center"><div id ="nameError" style="color: red;"></div></td>
+</tr>
+
+<tr id = "row" style="display: none;" align="center">
+    <td colspan="3" align="center">Welcome <span id = "userNameS"></span></td>
+</tr>
+
+<tr id = "animalSelectionRow" style="display: none;">
+    <td align="center">Select Animal</td>
+    <td align="left">
+        <select id = "animalSelection" name="selectionAnimal">
+            <option value="0" selected>Select Animal Option</option>
+            <option value="Lion" >Lion </option>
+            <option value="Leopard" >Leopard</option>
+            <option value="Tiger" >Tiger</option>
+            <option value="PolarBear" >PolarBear</option>
+            <option value="Wolf" >Wolf</option>
+            <option value="Jaguar" >Jaguar</option>
+        </select>
+    </td>
+    <td align="center"><input type="submit" id = "animalSubmit" value="Submit"></td>
+</tr>
+<tr>
+    <td colspan="3" align="center"><div id = "animalError" style="color: red;"></div></td>
+</tr>
+</table>
+<input type="hidden" name="userNameS" id="hiddenName">
+</form>
+</body>
+</html>
